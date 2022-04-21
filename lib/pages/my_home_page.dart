@@ -12,61 +12,96 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Future<List<Post>> posts = getPosts();
+  final _controller = ScrollController();
+  List<Post> posts = [];
+  // TODO: receber o page como argumento
+  int page = 1;
+  bool hasMore = true;
 
-  static Future<List<Post>> getPosts() async {
-    const url = 'https://jsonplaceholder.typicode.com/posts';
+  @override
+  void initState() {
+    super.initState();
+    getPosts();
+    _controller.addListener(() {
+      if (_controller.position.maxScrollExtent == _controller.offset) {
+        getPosts();
+      }
+    });
+  }
+
+  Future getPosts() async {
+    const limit = 15;
+    final url =
+        'https://jsonplaceholder.typicode.com/posts?_limit=$limit&_page=$page';
     final response = await http.get(Uri.parse(url));
-    final body = jsonDecode(response.body);
-    return body.map<Post>(Post.fromJson).toList();
+    if (response.statusCode == 200) {
+      final List newItems = jsonDecode(response.body);
+      setState(() {
+        page++;
+        if (newItems.length < limit) {
+          hasMore = false;
+        }
+        posts.addAll(
+          newItems.map<Post>((post) => Post(
+              body: post['body'],
+              id: post['id'],
+              title: post['title'],
+              userId: post['userId'])),
+        );
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    print('>>>>>>>>>>>>>>>>>> Current page ${page}');
     return Scaffold(
       body: Center(
-        child: FutureBuilder<List<Post>>(
-          future: posts,
-          builder: (ctx, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Erro: ${snapshot.error}');
-            } else if (snapshot.hasData) {
-              final posts = snapshot.data!;
-              return buildPosts(posts);
-            } else {
-              return const Text('Sem dados');
-            }
-          },
-        ),
+        child: buildPosts(posts),
       ),
     );
   }
 
   Widget buildPosts(List<Post> posts) => ListView.builder(
-      itemCount: posts.length,
-      itemBuilder: (context, index) {
-        final post = posts[index];
-        return Card(
-          child: ListTile(
-            leading: const CircleAvatar(
-              child: FlutterLogo(),
-            ),
-            title: Text(post.title),
-            trailing: const Icon(Icons.arrow_forward),
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                '/post-detail',
-                arguments: Post(
-                    id: posts[index].id,
-                    body: posts[index].body,
-                    userId: posts[index].userId,
-                    title: posts[index].title),
-              );
-            },
-          ),
-        );
-      });
+        controller: _controller,
+        itemCount: posts.length + 1,
+        itemBuilder: (context, index) {
+          if (index < posts.length) {
+            final post = posts[index];
+            return Card(
+              child: ListTile(
+                leading: CircleAvatar(
+                  child: Text('${posts[index].id}'),
+                ),
+                title: Text(post.title),
+                trailing: const Icon(Icons.arrow_forward),
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/post-detail',
+                    arguments: Post(
+                        id: posts[index].id,
+                        body: posts[index].body,
+                        userId: posts[index].userId,
+                        title: posts[index].title),
+                  );
+                },
+              ),
+            );
+          } else {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: hasMore ? const CircularProgressIndicator() : null,
+              ),
+            );
+          }
+        },
+      );
 }
