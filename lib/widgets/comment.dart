@@ -3,21 +3,22 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/comment_model.dart';
+import '../models/post_model.dart';
 
 class CommentSection extends StatefulWidget {
-  final int postId;
-  const CommentSection({Key? key, required this.postId}) : super(key: key);
+  final int userid;
+  const CommentSection({Key? key, required this.userid}) : super(key: key);
 
   @override
   State<CommentSection> createState() => _CommentSectionState();
 }
 
 class _CommentSectionState extends State<CommentSection> {
-  Future<List<Comment>> comments = getComments();
+  late Future<List<Comment>> comments = getComments(widget.userid);
 
-  static Future<List<Comment>> getComments() async {
+  static Future<List<Comment>> getComments(int userid) async {
     // TODO: Seguir o exemplo do tutorial tirando a tipagem do Future...
-    const url = 'https://jsonplaceholder.typicode.com/posts/1/comments';
+    final url = 'https://jsonplaceholder.typicode.com/posts/$userid/comments';
     final response = await http.get(Uri.parse(url));
     final body = jsonDecode(response.body);
     return body.map<Comment>(Comment.fromJson).toList();
@@ -25,6 +26,7 @@ class _CommentSectionState extends State<CommentSection> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Center(
       child: FutureBuilder<List<Comment>>(
         future: comments,
@@ -37,7 +39,7 @@ class _CommentSectionState extends State<CommentSection> {
             final comments = snapshot.data!;
             return buildComments(comments);
           } else {
-            return const Text('Sem dados');
+            return const Text('Ainda não há nenhum comentário!');
           }
         },
       ),
@@ -60,4 +62,9 @@ class _CommentSectionState extends State<CommentSection> {
           ),
         );
       });
+}
+
+class Arguments {
+  final int userid;
+  Arguments(this.userid);
 }
