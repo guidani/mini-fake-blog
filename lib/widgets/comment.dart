@@ -17,7 +17,7 @@ class _CommentSectionState extends State<CommentSection> {
 
   static Future<List<Comment>> getComments() async {
     // TODO: Seguir o exemplo do tutorial tirando a tipagem do Future...
-    const url = 'https://jsonplaceholder.typicode.com/posts/$postId/comments';
+    const url = 'https://jsonplaceholder.typicode.com/posts/1/comments';
     final response = await http.get(Uri.parse(url));
     final body = jsonDecode(response.body);
     return body.map<Comment>(Comment.fromJson).toList();
@@ -45,6 +45,7 @@ class _CommentSectionState extends State<CommentSection> {
   }
 
   Widget buildComments(List<Comment> comments) => ListView.builder(
+      shrinkWrap: true,
       itemCount: comments.length,
       itemBuilder: (context, index) {
         final comment = comments[index];
@@ -54,6 +55,7 @@ class _CommentSectionState extends State<CommentSection> {
               child: FlutterLogo(),
             ),
             title: Text(comment.name),
+            // TODO: trocar por icones de like e deslike
             trailing: const Icon(Icons.arrow_forward),
           ),
         );
