@@ -1,3 +1,4 @@
+import 'package:fetch_users_01/widgets/comment.dart';
 import 'package:flutter/material.dart';
 
 import '../models/post_model.dart';
@@ -20,11 +21,17 @@ class _PostDetailState extends State<PostDetail> {
         centerTitle: true,
         title: Text("User ${args.userId}"),
       ),
-      body: Card(
-        child: ListTile(
-          title: Text(args.title),
-          subtitle: Text(args.body),
-        ),
+      body: Column(
+        children: [
+          Card(
+            child: ListTile(
+              title: Text(args.title),
+              subtitle: Text(args.body),
+            ),
+          ),
+          const SizedBox(height: 10.0,),
+          CommentSection(postId: args.id),
+        ],
       ),
     );
   }
