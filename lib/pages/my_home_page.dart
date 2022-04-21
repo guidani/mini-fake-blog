@@ -54,6 +54,18 @@ class _MyHomePageState extends State<MyHomePage> {
               child: FlutterLogo(),
             ),
             title: Text(post.title),
+            trailing: const Icon(Icons.arrow_forward),
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                '/post-detail',
+                arguments: Post(
+                    id: posts[index].id,
+                    body: posts[index].body,
+                    userId: posts[index].userId,
+                    title: posts[index].title),
+              );
+            },
           ),
         );
       });
