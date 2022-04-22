@@ -26,7 +26,6 @@ class _CommentSectionState extends State<CommentSection> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Center(
       child: FutureBuilder<List<Comment>>(
         future: comments,
@@ -52,13 +51,45 @@ class _CommentSectionState extends State<CommentSection> {
       itemBuilder: (context, index) {
         final comment = comments[index];
         return Card(
-          child: ListTile(
-            leading: const CircleAvatar(
-              child: FlutterLogo(),
-            ),
-            title: Text(comment.name),
-            // TODO: trocar por icones de like e deslike
-            trailing: const Icon(Icons.arrow_forward),
+          child: Column(
+            children: [
+              ListTile(
+                leading: const CircleAvatar(
+                  child: FlutterLogo(),
+                ),
+                title: Text(comment.name),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: Material(
+                        child: InkWell(
+                          onTap: () {},
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.thumb_up_alt_outlined),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Material(
+                        child: InkWell(
+                          onTap: () {},
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.thumb_down_alt_outlined),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         );
       });
