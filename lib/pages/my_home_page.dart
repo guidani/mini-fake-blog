@@ -44,11 +44,15 @@ class _MyHomePageState extends State<MyHomePage> {
           hasMore = false;
         }
         posts.addAll(
-          newItems.map<Post>((post) => Post(
+          newItems.map<Post>(
+            (post) => Post(
               body: post['body'],
               id: post['id'],
               title: post['title'],
-              userId: post['userId'])),
+              userId: post['userId'],
+              urlAvatar: random.nextInt(21),
+            ),
+          ),
         );
       });
     }
@@ -79,8 +83,8 @@ class _MyHomePageState extends State<MyHomePage> {
             return Card(
               child: ListTile(
                 leading: CircleAvatar(
-                  backgroundImage: AssetImage('assets/peopleImages/${random.nextInt(21)}.jpg'),
-
+                  backgroundImage: AssetImage(
+                      'assets/peopleImages/${posts[index].urlAvatar}.jpg'),
                 ),
                 title: Text(post.title),
                 trailing: const Icon(Icons.arrow_forward),
