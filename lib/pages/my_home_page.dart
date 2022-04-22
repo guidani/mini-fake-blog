@@ -85,7 +85,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   backgroundImage: AssetImage(
                       'assets/peopleImages/${posts[index].userId}.jpg'),
                 ),
-                title: Text(post.title),
+                title: Text(
+                  "${post.title}...",
+                  maxLines: 1,
+                ),
+                subtitle: Text(
+                  "${post.body}...",
+                  maxLines: 2,
+                ),
                 trailing: const Icon(Icons.arrow_forward),
                 onTap: () {
                   Navigator.pushNamed(

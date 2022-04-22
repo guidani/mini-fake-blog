@@ -15,7 +15,7 @@ class _PostDetailState extends State<PostDetail> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as Post;
-    
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -25,11 +25,17 @@ class _PostDetailState extends State<PostDetail> {
         children: [
           Card(
             child: ListTile(
+              leading: CircleAvatar(
+                backgroundImage:
+                    AssetImage('assets/peopleImages/${args.userId}.jpg'),
+              ),
               title: Text(args.title),
               subtitle: Text(args.body),
             ),
           ),
-          const SizedBox(height: 10.0,),
+          const SizedBox(
+            height: 10.0,
+          ),
           CommentSection(userid: args.userId),
         ],
       ),
