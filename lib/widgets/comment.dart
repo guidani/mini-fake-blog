@@ -63,8 +63,3 @@ class _CommentSectionState extends State<CommentSection> {
         );
       });
 }
-
-class Arguments {
-  final int userid;
-  Arguments(this.userid);
-}

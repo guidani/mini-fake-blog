@@ -15,7 +15,7 @@ class _PostDetailState extends State<PostDetail> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as Post;
-    // print(args);
+    
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
