@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -12,6 +13,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Random random = Random();
   final _controller = ScrollController();
   List<Post> posts = [];
   // TODO: receber o page como argumento
@@ -77,7 +79,8 @@ class _MyHomePageState extends State<MyHomePage> {
             return Card(
               child: ListTile(
                 leading: CircleAvatar(
-                  child: Text('${posts[index].id}'),
+                  backgroundImage: AssetImage('assets/peopleImages/${random.nextInt(21)}.jpg'),
+
                 ),
                 title: Text(post.title),
                 trailing: const Icon(Icons.arrow_forward),
