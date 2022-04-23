@@ -36,7 +36,7 @@ class _PostDetailState extends State<PostDetail> {
           const SizedBox(
             height: 10.0,
           ),
-          CommentSection(userid: args.userId),
+          Expanded(child: CommentSection(userid: args.userId)),
         ],
       ),
     );
