@@ -13,19 +13,28 @@ class PostRepository {
       var url = await Uri.https('jsonplaceholder.typicode.com', '/posts',
           {'_limit': '20', '_page': '1'});
       final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final List newItems = jsonDecode(response.body);
-        posts.addAll(
-          newItems.map<Post>(
+      final newItems = jsonDecode(response.body);
+      return (newItems as List)
+          .map<Post>(
             (post) => Post(
               body: post['body'],
               id: post['id'],
               title: post['title'],
               userId: post['userId'],
             ),
-          ),
-        );
-      }
+          )
+          .toList();
+      // posts.addAll(
+      //   newItems.map<Post>(
+      //     (post) => Post(
+      //       body: post['body'],
+      //       id: post['id'],
+      //       title: post['title'],
+      //       userId: post['userId'],
+      //     ),
+      //   ),
+      // );
+
       return posts;
     } catch (error) {
       throw Exception(error);

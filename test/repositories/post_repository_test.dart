@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   final postRepo = PostRepository();
 
-  test('get all posts', () async {
+  test('should get a list os Posts', () async {
     var response = await postRepo.getPosts();
 
     expect(response, isNotNull);
