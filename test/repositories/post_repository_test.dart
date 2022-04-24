@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
 
+class MockHttpClient extends Mock implements Client {}
+
 void main() {
   final postRepo = PostRepository(Client());
 
@@ -14,3 +16,14 @@ void main() {
     expect(response[0].id, 1);
   });
 }
+
+var resultMock = 
+  List.generate(20, (index) => {
+    
+  });
+  // {
+  //   "body": "",
+  //   "id": 1,
+  //   "title": "",
+  //   "userId": 1,
+  // };
