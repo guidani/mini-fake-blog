@@ -33,9 +33,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future getPosts() async {
-    await PlaceholderController.init(page);
-    List<Post> resultFromPlaceholder = PlaceholderController.listOfPosts;
-
+    print('Page dentro do getPosts >>> $page');
+    // await PlaceholderController.init(page);
+    // List<Post> resultFromPlaceholder = PlaceholderController.getListOfPosts;
+    List<Post> resultFromPlaceholder = await PlaceholderController.init(page);
     setState(() {
       page++;
       if (resultFromPlaceholder.length < 15) {

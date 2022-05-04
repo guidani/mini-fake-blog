@@ -3,13 +3,14 @@ import 'package:fetch_users_01/models/post_model.dart';
 import 'package:fetch_users_01/repositories/jsonplaceholder_repo.dart';
 
 class PlaceholderController {
-  static late List<Post> listOfPosts = [];
+  // static late List<Post> listOfPosts = [];
 
   PlaceholderController();
 
-  List<Post> get getListOfPosts => listOfPosts;
+  // static List<Post> get getListOfPosts => listOfPosts;
 
   static Future<List<Post>> init(int page) async {
+    List<Post> listOfPosts = [];
     List result = await JsonplaceholderRepo.getData(page);
     listOfPosts.addAll(
       result.map<Post>(
