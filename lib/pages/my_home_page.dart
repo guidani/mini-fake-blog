@@ -41,10 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (resultFromPlaceholder.length < 15) {
         hasMore = false;
       }
-      posts = [
-      ...posts,
-      ...resultFromPlaceholder
-    ];
+      posts = [...posts, ...resultFromPlaceholder];
     });
   }
 
@@ -56,7 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print('>>>>>>>>>>>>>>>>>> Current page ${page}');
+    // print('>>>>>>>>>>>>>>>>>> Current page ${page}');
+    print('Tamanho da lista >>>> ${posts.length}');
     return Scaffold(
       body: Center(
         child: buildPosts(posts),
@@ -77,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       'assets/peopleImages/${posts[index].userId}.jpg'),
                 ),
                 title: Text(
-                  "${post.title}...",
+                  "${index} ${post.title}...",
                   maxLines: 1,
                 ),
                 subtitle: Text(
