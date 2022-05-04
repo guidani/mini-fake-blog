@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:fetch_users_01/controllers/placeholder_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/post_model.dart';
@@ -13,16 +14,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Random random = Random();
+  late final placeholderController = PlaceholderController();
   final _controller = ScrollController();
   List<Post> posts = [];
-  // TODO: receber o page como argumento
   int page = 1;
   bool hasMore = true;
 
   @override
   void initState() {
     super.initState();
+
     getPosts();
     _controller.addListener(() {
       if (_controller.position.maxScrollExtent == _controller.offset) {
@@ -32,29 +33,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future getPosts() async {
-    const limit = 15;
-    final url =
-        'https://jsonplaceholder.typicode.com/posts?_limit=$limit&_page=$page';
-    final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      final List newItems = jsonDecode(response.body);
-      setState(() {
-        page++;
-        if (newItems.length < limit) {
-          hasMore = false;
-        }
-        posts.addAll(
-          newItems.map<Post>(
-            (post) => Post(
-              body: post['body'],
-              id: post['id'],
-              title: post['title'],
-              userId: post['userId'],
-            ),
-          ),
-        );
-      });
-    }
+    await PlaceholderController.init(page);
+    List<Post> resultFromPlaceholder = PlaceholderController.listOfPosts;
+
+    setState(() {
+      page++;
+      if (resultFromPlaceholder.length < 15) {
+        hasMore = false;
+      }
+      posts = [
+      ...posts,
+      ...resultFromPlaceholder
+    ];
+    });
   }
 
   @override
